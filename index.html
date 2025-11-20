@@ -38,45 +38,182 @@
     /* =========================
        NAV
        ========================= */
-    header{
-      position:sticky;top:0;z-index:60;
-      backdrop-filter:blur(8px);
-      background:linear-gradient(180deg, rgba(5,10,18,0.66), rgba(5,10,18,0.35));
-      border-bottom:1px solid rgba(255,255,255,0.03);
-    }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;padding:12px 0;
-    }
-    .brand{
-      display:flex;align-items:center;gap:12px;font-weight:700;
-    }
-    .brand .logo{
-      width:48px;height:48px;border-radius:12px;overflow:hidden;flex:0 0 48px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      display:grid;place-items:center;font-family:Playfair Display;font-size:20px;color:white;
-      box-shadow:0 6px 20px rgba(14,165,163,0.18);
-    }
-    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;align-items:center}
-    nav a.navlink{padding:8px 10px;border-radius:10px;color:var(--card);font-weight:600;font-size:.95rem;opacity:.95}
-    nav a.navlink:hover{background:rgba(255,255,255,0.03)}
-    .actions{display:flex;gap:10px;align-items:center}
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:600;
-      cursor:pointer;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:0 8px 30px rgba(14,165,163,0.12)
-    }
-    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--card)}
-    .mobile-toggle{display:none;background:transparent;border:0;color:var(--card)}
-    /* =========================
-       HERO
-       ========================= */
-    .hero{
-      display:grid;grid-template-columns:1fr;gap:28px;align-items:center;padding:42px 0 32px;
-    }
-    .hero-card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:20px;padding:28px;display:flex;gap:20px;align-items:center;
-      box-shadow:0 10px 40px rgba(2,6,23,0.6);
-    }
-    .hero-left{flex:1}
+  
+  /* Header base */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(5,10,18,0.66), rgba(5,10,18,0.35));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* container + nav row */
+.container.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 12px;
+  position: relative; /* for mobile dropdown positioning */
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+/* Logo */
+.brand .logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 0 0 48px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid;
+  place-items: center;
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  color: white;
+  box-shadow: 0 6px 20px rgba(14, 165, 163, 0.18);
+}
+
+/* Navigation - desktop default */
+nav {
+  display: block;
+}
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+nav a.navlink {
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--card);
+  font-weight: 600;
+  font-size: .95rem;
+  opacity: .95;
+  text-decoration: none;
+}
+nav a.navlink:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+/* Buttons / actions */
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* CTA buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: white;
+  box-shadow: 0 8px 30px rgba(14,165,163,0.12);
+}
+.btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--card);
+}
+
+/* Mobile toggle - hidden on desktop */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: var(--card);
+  font-size: 1.2rem;
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* ===== Mobile styles ===== */
+@media (max-width: 767px) {
+  /* show hamburger */
+  .mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* hide the desktop nav by default */
+  nav ul.nav-list {
+    display: none; /* hidden until toggled */
+  }
+
+  /* when open, make it a dropdown panel */
+  nav ul.nav-list.open {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    position: absolute;
+    top: calc(100% + 10px); /* below header */
+    right: 12px;
+    left: 12px; /* full width with margins */
+    background: linear-gradient(180deg, rgba(5,10,18,0.76), rgba(5,10,18,0.5));
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: transform 180ms ease, opacity 180ms ease;
+    transform-origin: top right;
+    z-index: 70;
+  }
+
+  /* optional small animation on open */
+  nav ul.nav-list.open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* navlinks full width on mobile */
+  nav a.navlink {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  /* ensure header content doesn't wrap awkwardly */
+  .container.nav {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* hide desktop-only actions if needed (adjust as necessary) */
+  .actions--desktop {
+    display: none;
+  }
+}
+
+/* ===== Desktop adjustments (optional) ===== */
+@media (min-width: 768px) {
+  /* ensure mobile toggle hidden, nav displayed as row */
+  .mobile-toggle { display: none; }
+  nav ul.nav-list { display: flex !important; flex-direction: row; }
+}
+
+  .hero-left{flex:1}
     .kicker{display:inline-block;padding:.35rem .6rem;border-radius:999px;background:rgba(255,255,255,0.04);color:var(--muted);font-size:.85rem}
     h1{
       font-family:Playfair Display, serif;
@@ -85,7 +222,7 @@
     .subtitle{color:var(--muted);font-size:1rem;margin-bottom:14px}
     .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
     .hero-photo{
-      width:420px;height:340px;border-radius:16px;overflow:hidden;flex:0 0 420px;
+      width:420px;height:450px;border-radius:16px;overflow:hidden;flex:0 0 420px;
       box-shadow:0 18px 60px rgba(11,27,41,0.6), inset 0 -10px 40px rgba(0,0,0,0.25);
     }
     .hero-photo img{width:100%;height:100%;object-fit:cover}
@@ -144,9 +281,76 @@
     /* =========================
        BRANCH CARDS
        ========================= */
-    .branch{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px}
-    .branch h3{margin:0;margin-bottom:6px}
-    .call{display:inline-flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(14,165,163,0.12);color:var(--card);font-weight:700}
+/* --- Branch Cards --- */
+.branch {
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  transition: transform .25s ease, box-shadow .25s ease;
+  backdrop-filter: blur(6px);
+}
+
+/* Hover effect for desktop */
+@media (min-width: 768px) {
+  .branch:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+  }
+}
+
+.branch h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Soft spacing for texts */
+.branch p {
+  margin: 6px 0;
+  color: var(--card, #ddd);
+  line-height: 1.45;
+  font-size: 0.95rem;
+}
+
+.branch p strong {
+  color: #fff;
+}
+
+/* Phone number link */
+.branch .call {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.branch .call:hover {
+  text-decoration: underline;
+}
+
+/* --- Responsive layout improvements --- */
+#branches .row {
+  display: grid;
+  gap: 18px;              /* spacing between cards on mobile */
+}
+
+/* Desktop: 3-column layout */
+@media (min-width: 768px) {
+  #branches .row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+}
+
+/* Larger screens: a bit more breathing room */
+@media (min-width: 1100px) {
+  #branches .row {
+    gap: 28px;
+  }
+}
+
+.call{display:inline-flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(14,165,163,0.12);color:var(--card);font-weight:700}
     /* =========================
        MENU
        ========================= */
@@ -154,7 +358,7 @@
     .menu-cat{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px}
     .menu-item{display:flex;gap:12px;align-items:center;border-top:1px dashed rgba(255,255,255,0.02);padding:10px 0}
     .menu-item:first-of-type{border-top:0;padding-top:6px}
-    .menu-item .thumb{width:66px;height:50px;border-radius:8px;overflow:hidden;flex:0 0 66px}
+    .menu-item .thumb{width:66px;height:70px;border-radius:8px;overflow:hidden;flex:0 0 66px}
     .menu-item .meta{flex:1}
     .menu-item .meta .name{font-weight:700}
     .menu-item .meta .labels{font-size:.75rem;color:var(--muted);margin-top:6px}
@@ -185,36 +389,58 @@
     .zoom-in.show{opacity:1; transform:scale(1) }
     /* Accessibility */
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    /*new nav menu*/
+    /* Default hidden on mobile */
+.nav-list {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* When toggled open */
+.nav-list.open {
+  display: flex;
+}
+
+/* Desktop mode */
+@media (min-width: 768px) {
+  .mobile-toggle {
+    display: none;
+  }
+  .nav-list {
+    display: flex !important;
+    flex-direction: row;
+  }
+}
+
+    /**/
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
       <div class="brand">
-        <div class="logo" aria-hidden="true">K</div>
+        <div class="logo" aria-hidden="true"><img src="images/karimata.jpg"/></div>
         <div>
           <div style="font-size:.95rem;color:var(--muted)">Karimata</div>
           <div style="font-weight:700;line-height:1;font-size:13px;color:#fff">Seafood · Asian · Indonesian</div>
         </div>
       </div>
 
-      <nav aria-label="Main navigation">
-        <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-label="Open menu">☰</button>
-        <ul id="navList">
-          <li><a class="navlink" href="#hero">Home</a></li>
-          <li><a class="navlink" href="#dishes">Dishes</a></li>
-          <li><a class="navlink" href="#gallery">Ambiance</a></li>
-          <li><a class="navlink" href="#branches">Branches</a></li>
-          <li><a class="navlink" href="#menu">Menu</a></li>
-          <li><a class="navlink" href="#about">About</a></li>
-          <li><a class="navlink" href="#reviews">Reviews</a></li>
-        </ul>
-      </nav>
+    <nav aria-label="Main navigation">
+  <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-label="Open menu">☰</button>
+  <ul id="navList" class="nav-list">
+    <li><a class="navlink" href="#hero">Home</a></li>
+    <li><a class="navlink" href="#dishes">Dishes</a></li>
+    <li><a class="navlink" href="#gallery">Ambiance</a></li>
+    <li><a class="navlink" href="#branches">Branches</a></li>
+    <li><a class="navlink" href="#menu">Menu</a></li>
+    <li><a class="navlink" href="#about">About</a></li>
+    <li><a class="navlink" href="#reviews">Reviews</a></li>
+  </ul>
+</nav>
 
-      <div class="actions">
-        <a class="btn" href="#order" title="Order now">Order Now</a>
-        <a class="btn secondary" href="#booking" title="Book a table">Book a Table</a>
-      </div>
+     
     </div>
   </header>
 
@@ -391,7 +617,7 @@
           <p><strong>Address:</strong> Jln. Raya Pondok Gede Taman Anggrek Indonesia Permai, Jakarta 13560 Indonesia</p>
           <p><strong>Hours:</strong> Mon–Sun: 11:00 — 22:30</p>
           <p><strong>Phone:</strong> <a class="call" href="tel:+621234567890">+62 12 3456 7890</a></p>
-          <p style="color:var(--muted);margin-top:6px">Parking available • Private dining on request</p>
+
         </div>
 
         <div class="branch col fade-in" role="region" aria-label="Bogor branch">
@@ -399,7 +625,7 @@
           <p><strong>Address:</strong> Lokasinya di Depan Pintu Tol Sentul Selatan-2 The Grand Sentul City, Kota Bogor</p>
           <p><strong>Hours:</strong> Mon–Sun: 11:00 — 22:00</p>
           <p><strong>Phone:</strong> <a class="call" href="tel:+628112233445">+62 811-2233-445</a></p>
-          <p style="color:var(--muted);margin-top:6px">Family-friendly • Outdoor seating</p>
+
         </div>
 
         <div class="branch col fade-in" role="region" aria-label="Lampung branch">
@@ -407,10 +633,8 @@
           <p><strong>Address:</strong> Jl. Teuku Umar No. 4 Gunung Sari, Enggal, Bandar Lampung 35111 Indonesia</p>
           <p><strong>Hours:</strong> Mon–Sun: 11:00 — 21:30</p>
           <p><strong>Phone:</strong> <a class="call" href="tel:+62899887766">+62 899-8877-66</a></p>
-          <p style="color:var(--muted);margin-top:6px">Local fish selection • Great sunset views</p>
         </div>
       </div>
-      <p style="margin-top:12px;color:var(--muted)">Tip: Mobile users can tap the phone numbers to call directly.</p>
     </section>
 
     <!-- MENU -->
@@ -678,17 +902,66 @@
     });
 
     // Mobile nav toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navList = document.getElementById('navList');
-    mobileToggle && mobileToggle.addEventListener('click', ()=> toggleNav());
-    function toggleNav(force){
-      const open = force === undefined ? navList.style.display !== 'flex' : force;
-      navList.style.display = open ? 'flex' : 'none';
-      navList.style.flexDirection = open ? 'column' : '';
-      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
+// Mobile nav toggle with accessibility + outside-click + ESC support
+(function(){
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navList = document.getElementById('navList');
 
-    // IntersectionObserver for reveal animations
+  if (!mobileToggle || !navList) return;
+
+  // Toggle function: accepts optional boolean forceOpen
+  function setNavOpen(forceOpen) {
+    const isOpen = typeof forceOpen === 'boolean' ? forceOpen : !navList.classList.contains('open');
+    if (isOpen) {
+      navList.classList.add('open');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+      // prevent body scroll when menu open (optional)
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      navList.classList.remove('open');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+    }
+  }
+
+  // Click the hamburger
+  mobileToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setNavOpen();
+  });
+
+  // Close when clicking a nav link (mobile)
+  navList.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a');
+    if (!anchor) return;
+    // close only on small screens
+    if (window.matchMedia('(max-width: 767px)').matches) setNavOpen(false);
+  });
+
+  // Click outside should close the menu
+  document.addEventListener('click', (e) => {
+    if (!navList.classList.contains('open')) return;
+    const insideNav = e.composedPath().includes(navList) || e.composedPath().includes(mobileToggle);
+    if (!insideNav) setNavOpen(false);
+  });
+
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navList.classList.contains('open')) {
+      setNavOpen(false);
+    }
+  });
+
+  // Optional: close menu when resizing to desktop width
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 768px)').matches && navList.classList.contains('open')) {
+      setNavOpen(false);
+    }
+  });
+})();
+
+
+// IntersectionObserver for reveal animations
     const io = new IntersectionObserver((entries)=> {
       entries.forEach(ent=>{
         if(ent.isIntersecting){
@@ -737,4 +1010,3 @@
   </script>
 </body>
 </html>
-
