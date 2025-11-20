@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karimata Restaurant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #fafafa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    nav {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    nav .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #007b7f;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #007b7f;
+    }
+
+    /* Mobile Menu */
+    .menu-btn {
+      display: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        flex-direction: column;
+        align-items: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: 0.4s;
+        border-bottom: 1px solid #eee;
+      }
+      nav ul.show {
+        max-height: 350px;
+      }
+      .menu-btn {
+        display: block;
+      }
+    }
+
+    /* HERO SECTION */
+    .hero {
+      height: 95vh;
+      background: url('https://images.unsplash.com/photo-1553621042-f6e147245754') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+      color: #fff;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 25px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .hero-buttons a {
+      display: inline-block;
+      padding: 12px 25px;
+      margin: 0 10px;
+      border-radius: 30px;
+      background: #007b7f;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .hero-buttons a:hover {
+      background: #005e61;
+    }
+
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #007b7f;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 40px;
+      color: #555;
+    }
+
+    /* FEATURED DISHES */
+    .dish-grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .dish-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    .dish-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .dish-card h3 {
+      padding: 15px;
+      font-size: 1.2rem;
+    }
+
+    /* GALLERY */
+    .gallery-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 10px;
+      height: 130px;
+      object-fit: cover;
+    }
+
+    /* BRANCHES */
+    .branches {
+      display: grid;
+      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    }
+
+    .branch {
+      padding: 20px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .branch h3 {
+      margin-bottom: 10px;
+      color: #007b7f;
+    }
+
+    .call-btn {
+      margin-top: 10px;
+      display: inline-block;
+      background: #007b7f;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    /* MENU */
+    .menu-category {
+      margin-bottom: 35px;
+    }
+
+    .menu-category h3 {
+      color: #007b7f;
+      margin-bottom: 15px;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    /* ABOUT */
+    .about {
+      text-align: center;
+      max-width: 900px;
+    }
+
+    /* REVIEWS */
+    .reviews {
+      display: grid;
+      gap: 25px;
+      grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    }
+
+    .review-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #003b3d;
+      color: #fff;
+      padding-top: 50px;
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      gap: 25px;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      padding: 0 20px;
+    }
+
+    .footer-nav {
+      text-align: center;
+      padding: 25px 0;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin-top: 25px;
+    }
+    .footer-nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+
+    .social-icons {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .social-icons a {
+      margin: 0 10px;
+      color: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <header>
+    <nav>
+      <div class="logo">Karimata</div>
+      <ul id="navLinks">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#featured">Featured</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#branches">Branches</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+      </ul>
+      <span class="menu-btn" onclick="toggleMenu()">☰</span>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <h1>Karimata Restaurant</h1>
+    <p>Finest Seafood • Asian Fusion • Indonesian Culinary Excellence</p>
+    <div class="hero-buttons">
+      <a href="#menu">Order Now</a>
+      <a href="#branches">Book a Table</a>
+    </div>
+  </section>
+
+  <!-- FEATURED DISHES -->
+  <section id="featured">
+    <h2 class="section-title">Featured Dishes</h2>
+    <p class="section-sub">Taste the signature dishes that define our flavor journey</p>
+    <div class="dish-grid">
+      <div class="dish-card">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Dish">
+        <h3>Signature Grilled Lobster</h3>
+      </div>
+      <div class="dish-card">
+        <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9" alt="Dish">
+        <h3>Spicy Indonesian Crab</h3>
+      </div>
+      <div class="dish-card">
+        <img src="https://images.unsplash.com/photo-1580650397529-486b67be39e5" alt="Dish">
+        <h3>Asian Fusion Shrimp Bowl</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <h2 class="section-title">Ambience & Experience</h2>
+    <p class="section-sub">Experience luxury, comfort & delicious moments</p>
+    <div class="gallery-grid">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0"> <img src="https://images.unsplash.com/photo-1556741533-f6acd6473210">
+      <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1"> <img src="https://images.unsplash.com/photo-1430931071372-38127bd472b8">
+      <img src="https://images.unsplash.com/photo-1421622548261-c45bfe178854"> <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836">
+      <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1"> <img src="https://images.unsplash.com/photo-1525610553991-2bede1a236e2">
+    </div>
+  </section>
+
+  <!-- BRANCHES -->
+  <section id="branches">
+    <h2 class="section-title">Our Branches</h2>
+    <div class="branches">
+      <div class="branch">
+        <h3>Jakarta</h3>
+        <p>Jln. Raya Pondok Gede Taman Anggrek Indonesia Permai, Jakarta 13560 Indonesia</p>
+        <p>Hours: 10:00 AM - 11:00 PM</p>
+        <a href="tel:+620000000000" class="call-btn">Call Now</a>
+      </div>
+
+      <div class="branch">
+        <h3>Kota Bogor</h3>
+        <p>Depan Pintu Tol Sentul Selatan-2 The Grand Sentul City, Kota Bogor</p>
+        <p>Hours: 10:00 AM - 11:00 PM</p>
+        <a href="tel:+620000000000" class="call-btn">Call Now</a>
+      </div>
+
+      <div class="branch">
+        <h3>Lampung</h3>
+        <p>Lampung City</p>
+        <p>Hours: 10:00 AM - 11:00 PM</p>
+        <a href="tel:+620000000000" class="call-btn">Call Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <h2 class="section-title">Our Menu</h2>
+    <div class="menu-category">
+      <h3>Seafood Specials</h3>
+      <div class="menu-item"><span>Grilled Lobster</span> <span>$24</span></div>
+      <div class="menu-item"><span>Chilli Crab</span> <span>$18</span></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <h2 class="section-title">About Us</h2>
+    <div class="about">
+      <p>Karimata Restaurant brings the best seafood fusion cuisine crafted by experienced chefs.</p>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <h2 class="section-title">Reviews & Testimonials</h2>
+    <div class="reviews">
+      <div class="review-box">“Amazing food and great experience!”</div>
+      <div class="review-box">“Highly recommended for seafood lovers.”</div>
+    </div>
+  </section>
+
+  <!-- PROMOTIONS -->
+  <section>
+    <h2 class="section-title">Special Offers</h2>
+    <p class="section-sub">Stay tuned for special festival deals!</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h3>Jakarta</h3>
+        <p>Jln. Raya Pondok Gede Taman Anggrek Indonesia Permai</p>
+        <p>📞 +620000000000</p>
+      </div>
+
+      <div>
+        <h3>Kota Bogor</h3>
+        <p>The Grand Sentul City</p>
+        <p>📞 +620000000000</p>
+      </div>
+
+      <div>
+        <h3>Lampung</h3>
+        <p>Lampung City</p>
+        <p>📞 +620000000000</p>
+      </div>
+    </div>
+
+    <div class="social-icons">
+      <a href="#">IG</a>
+      <a href="#">FB</a>
+      <a href="#">TikTok</a>
+    </div>
+
+    <div class="footer-nav">
+      <a href="#hero">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#branches">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu(){
+      let nav = document.getElementById('navLinks');
+      nav.classList.toggle('show');
+    }
+  </script>
+
+</body>
+</html>

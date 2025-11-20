@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Karimata Restaurant — Seafood · Asian · Indonesian</title>
+  <meta name="description" content="Karimata Restaurant — Fresh seafood & authentic Asian & Indonesian flavors. Book a table, order online, explore our menu and galleries." />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================
+       Variables & Reset
+       ========================= */
+    :root{
+      --bg:#0f1724;            /* deep navy backdrop */
+      --card:#ffffff;
+      --muted:#9aa4b2;
+      --accent:#0ea5a3;        /* teal-ish */
+      --accent-2:#ff6b4a;      /* coral accent */
+      --glass: rgba(255,255,255,0.06);
+      --radius:16px;
+      --max-width:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      margin:0;background:linear-gradient(180deg,#071024 0%, #081526 45%, #0b1b2b 100%);color:#e6eef6;
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+      line-height:1.45;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block;height:auto}
+    .container{width:92%;max-width:var(--max-width);margin:0 auto}
+    .row{display:flex;gap:24px;flex-wrap:wrap}
+    .col{flex:1 1 0}
+    .badge{display:inline-block;padding:.25rem .6rem;border-radius:999px;font-size:.78rem;background:var(--glass);color:var(--card);backdrop-filter:blur(6px)}
+    /* =========================
+       NAV
+       ========================= */
+    header{
+      position:sticky;top:0;z-index:60;
+      backdrop-filter:blur(8px);
+      background:linear-gradient(180deg, rgba(5,10,18,0.66), rgba(5,10,18,0.35));
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;padding:12px 0;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;font-weight:700;
+    }
+    .brand .logo{
+      width:48px;height:48px;border-radius:12px;overflow:hidden;flex:0 0 48px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:grid;place-items:center;font-family:Playfair Display;font-size:20px;color:white;
+      box-shadow:0 6px 20px rgba(14,165,163,0.18);
+    }
+    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;align-items:center}
+    nav a.navlink{padding:8px 10px;border-radius:10px;color:var(--card);font-weight:600;font-size:.95rem;opacity:.95}
+    nav a.navlink:hover{background:rgba(255,255,255,0.03)}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:600;
+      cursor:pointer;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;box-shadow:0 8px 30px rgba(14,165,163,0.12)
+    }
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--card)}
+    .mobile-toggle{display:none;background:transparent;border:0;color:var(--card)}
+    /* =========================
+       HERO
+       ========================= */
+    .hero{
+      display:grid;grid-template-columns:1fr;gap:28px;align-items:center;padding:42px 0 32px;
+    }
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;padding:28px;display:flex;gap:20px;align-items:center;
+      box-shadow:0 10px 40px rgba(2,6,23,0.6);
+    }
+    .hero-left{flex:1}
+    .kicker{display:inline-block;padding:.35rem .6rem;border-radius:999px;background:rgba(255,255,255,0.04);color:var(--muted);font-size:.85rem}
+    h1{
+      font-family:Playfair Display, serif;
+      font-size:clamp(26px,5vw,48px);margin:.25rem 0;color:#fff;letter-spacing:-0.02em;
+    }
+    .subtitle{color:var(--muted);font-size:1rem;margin-bottom:14px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-photo{
+      width:420px;height:340px;border-radius:16px;overflow:hidden;flex:0 0 420px;
+      box-shadow:0 18px 60px rgba(11,27,41,0.6), inset 0 -10px 40px rgba(0,0,0,0.25);
+    }
+    .hero-photo img{width:100%;height:100%;object-fit:cover}
+    /* =========================
+       INTRO STATS
+       ========================= */
+    .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .stat-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px 16px;border-radius:12px;text-align:center;min-width:120px}
+    .stat-card .num{font-size:1.3rem;font-weight:700;color:var(--accent)}
+    /* =========================
+       SECTION STYLING
+       ========================= */
+    section{padding:48px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+    section.secondary{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent)}
+    h2.section-title{font-family:Playfair Display;margin:0 0 12px;font-size:1.6rem;color:#fff}
+    p.lead{color:var(--muted);max-width:60ch}
+    /* =========================
+       FEATURED DISHES
+       ========================= */
+    .dishes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
+    .dish{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:12px;border-radius:14px;overflow:hidden;display:flex;gap:12px;align-items:flex-start;
+      transition:transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .35s;
+    }
+    .dish:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(2,6,23,0.6)}
+    .dish-thumb{width:110px;height:90px;flex:0 0 110px;border-radius:10px;overflow:hidden}
+    .dish-title{font-weight:700}
+    .dish-desc{color:var(--muted);font-size:.95rem;margin-top:6px}
+    .price{margin-left:auto;font-weight:800;color:var(--accent-2)}
+    /* dietary pills */
+    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .pill{padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:.78rem;color:var(--muted)}
+    /* =========================
+       GALLERY
+       ========================= */
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .gallery-grid .item{border-radius:10px;overflow:hidden;position:relative;min-height:110px}
+    /* light overlay & flicker on hover */
+    .gallery-grid .item img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+    .gallery-grid .item:hover img{transform:scale(1.08)}
+    /* small screens */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;gap:16px}
+      .hero-photo{flex:0 0 auto;width:100%;height:260px}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      nav ul{display:none}
+      .mobile-toggle{display:inline-flex}
+    }
+    @media (max-width:520px){
+      .dishes-grid{grid-template-columns:repeat(1,1fr)}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-card{flex-direction:column}
+      .nav{padding:8px 0}
+    }
+    /* =========================
+       BRANCH CARDS
+       ========================= */
+    .branch{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px}
+    .branch h3{margin:0;margin-bottom:6px}
+    .call{display:inline-flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:rgba(14,165,163,0.12);color:var(--card);font-weight:700}
+    /* =========================
+       MENU
+       ========================= */
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .menu-cat{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px}
+    .menu-item{display:flex;gap:12px;align-items:center;border-top:1px dashed rgba(255,255,255,0.02);padding:10px 0}
+    .menu-item:first-of-type{border-top:0;padding-top:6px}
+    .menu-item .thumb{width:66px;height:50px;border-radius:8px;overflow:hidden;flex:0 0 66px}
+    .menu-item .meta{flex:1}
+    .menu-item .meta .name{font-weight:700}
+    .menu-item .meta .labels{font-size:.75rem;color:var(--muted);margin-top:6px}
+    .menu-item .price{font-weight:800;color:var(--accent-2)}
+    /* =========================
+       TEAM
+       ========================= */
+    .team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px}
+    .team-member{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:12px;text-align:center}
+    .member-photo{width:100%;height:160px;border-radius:10px;overflow:hidden}
+    .member-photo img{width:100%;height:100%;object-fit:cover}
+    /* =========================
+       TESTIMONIALS
+       ========================= */
+    .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .testi{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+    /* CTA BAR */
+    .cta-bar{display:flex;align-items:center;justify-content:space-between;padding:18px;border-radius:12px;margin-top:20px;background:linear-gradient(90deg, rgba(14,165,163,0.07), rgba(255,107,74,0.06))}
+    /* Footer */
+    footer{padding:36px 0 80px;color:var(--muted)}
+    .footer-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:20px}
+    .map-thumb{width:100%;height:160px;border-radius:10px;overflow:hidden}
+    .footer-nav{display:flex;gap:12px;flex-wrap:wrap}
+    /* tiny helper animations */
+    .fade-in { opacity:0; transform:translateY(18px); transition:all .8s cubic-bezier(.2,.9,.2,1) }
+    .fade-in.show{opacity:1; transform:translateY(0) }
+    .zoom-in { opacity:0; transform:scale(.98); transition:all .7s cubic-bezier(.2,.9,.2,1) }
+    .zoom-in.show{opacity:1; transform:scale(1) }
+    /* Accessibility */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">K</div>
+        <div>
+          <div style="font-size:.95rem;color:var(--muted)">Karimata</div>
+          <div style="font-weight:700;line-height:1;font-size:13px;color:#fff">Seafood · Asian · Indonesian</div>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <button class="mobile-toggle" id="mobileToggle" aria-expanded="false" aria-label="Open menu">☰</button>
+        <ul id="navList">
+          <li><a class="navlink" href="#hero">Home</a></li>
+          <li><a class="navlink" href="#dishes">Dishes</a></li>
+          <li><a class="navlink" href="#gallery">Ambiance</a></li>
+          <li><a class="navlink" href="#branches">Branches</a></li>
+          <li><a class="navlink" href="#menu">Menu</a></li>
+          <li><a class="navlink" href="#about">About</a></li>
+          <li><a class="navlink" href="#reviews">Reviews</a></li>
+        </ul>
+      </nav>
+
+      <div class="actions">
+        <a class="btn" href="#order" title="Order now">Order Now</a>
+        <a class="btn secondary" href="#booking" title="Book a table">Book a Table</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section id="hero" class="hero" aria-label="Hero section">
+      <div class="hero-card fade-in">
+        <div class="hero-left">
+          <span class="kicker">Fine Dining · 4★</span>
+          <h1>Karimata Restaurant</h1>
+          <p class="subtitle">Savor the ocean — authentic Indonesian & Asian seafood with an upscale modern touch. Fresh catches prepared with traditional spices and contemporary flair.</p>
+
+          <div class="hero-cta">
+            <a class="btn" href="#order" role="button">Order Now</a>
+            <a class="btn secondary" href="#booking" role="button">Book a Table</a>
+          </div>
+
+          <div class="stats" style="margin-top:14px">
+            <div class="stat-card">
+              <div class="num">120+</div>
+              <div class="muted">Dishes</div>
+            </div>
+            <div class="stat-card">
+              <div class="num">4.6★</div>
+              <div class="muted">Customer Rating</div>
+            </div>
+            <div class="stat-card">
+              <div class="num">3 Branches</div>
+              <div class="muted">Jakarta · Bogor · Lampung</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-photo zoom-in" aria-hidden="true">
+          <!-- Replace this image with a high-res seafood/Asian restaurant hero -->
+          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Karimata seafood hero image" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BAR (sticky promo) -->
+    <section class="secondary" aria-hidden="false">
+      <div class="container" style="display:flex;gap:18px;align-items:center;justify-content:space-between">
+        <div>
+          <h3 style="margin:0">Weekend Seafood Platter — 20% OFF</h3>
+          <p style="margin:.35rem 0 0;color:var(--muted)">Available Friday to Sunday — family platter for 2–4 with special sambal.</p>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <a class="btn" href="#order">Order Platter</a>
+          <a class="btn secondary" href="#booking">Reserve Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED DISHES -->
+    <section id="dishes" aria-labelledby="dishesHeading">
+      <h2 id="dishesHeading" class="section-title">Signature Dishes</h2>
+      <p class="lead">Chef-curated favorites — inspired by coastal Indonesian recipes and Asian techniques.</p>
+
+      <div class="dishes-grid" style="margin-top:18px">
+        <!-- Dish 1 -->
+        <article class="dish fade-in">
+          <div class="dish-thumb">
+            <img src="images/Bamboo Roasted Fish.png" alt="Sambal Grilled Prawns">
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="dish-title">Bamboo Roasted Fish</div>
+              <div class="price"></div>
+            </div>
+            <div class="dish-desc">Plump prawns char-grilled and glazed with house-made sambal matah. Served with coconut-lime rice.</div>
+            <div class="pills">
+              <span class="pill">Seafood</span><span class="pill">Spicy</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Dish 2 -->
+        <article class="dish fade-in">
+          <div class="dish-thumb">
+            <img src="images/Gurame Asam Manis.png" alt="Crispy Calamari">
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="dish-title">Gurame Asam Manis</div>
+              <div class="price"></div>
+            </div>
+            <div class="dish-desc">Lightly battered squid rings with citrus aioli and chili-lime zest.</div>
+            <div class="pills">
+              <span class="pill">Gluten</span><span class="pill">Shareable</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Dish 3 -->
+        <article class="dish fade-in">
+          <div class="dish-thumb">
+            <img src="images/Ikan Bakar Bambu.png" alt="Black Pepper Crab">
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="dish-title">Ikan Bakar Bambu</div>
+              <div class="price"></div>
+            </div>
+            <div class="dish-desc">Fresh mud crab wok-fried in black pepper sauce with scallions.</div>
+            <div class="pills">
+              <span class="pill">Signature</span><span class="pill">Contains Shellfish</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Dish 4 -->
+        <article class="dish fade-in">
+          <div class="dish-thumb">
+            <img src="images/Ikan Patin Bakar Bambu.png" alt="Seafood Laksa">
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="dish-title">Ikan Patin Bakar Bambu</div>
+              <div class="price"></div>
+            </div>
+            <div class="dish-desc">Creamy coconut laksa with tiger prawns, squid, fish cake, and rice noodles.</div>
+            <div class="pills">
+              <span class="pill">Contains Dairy</span><span class="pill">Spicy</span>
+            </div>
+          </div>
+        </article>
+
+     
+
+      
+      </div>
+    </section>
+
+    <!-- AMBIANCE GALLERY (first 8) -->
+    <section id="gallery" aria-labelledby="galleryHeading">
+      <h2 id="galleryHeading" class="section-title">Ambiance & Interiors</h2>
+      <p class="lead">Explore the warm, coastal-inspired interior — soft lighting, reclaimed teak furniture, and oceanic details.</p>
+
+      <div style="margin-top:18px" class="gallery-grid zoom-in" aria-hidden="false">
+        <!-- 8 images (replace with real photos) -->
+        <div class="item"><img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=1" alt="Interior 1" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=2" alt="Interior 2" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1473186578172-c141e6798cf4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3" alt="Interior 3" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=4" alt="Interior 4" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=5" alt="Interior 5" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=6" alt="Interior 6" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=7" alt="Interior 7" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=8" alt="Interior 8" loading="lazy"></div>
+      </div>
+
+      <!-- second gallery (8 more) -->
+      <h3 style="margin-top:28px">More Moments</h3>
+      <div class="gallery-grid fade-in" style="margin-top:12px">
+        <div class="item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=12" alt="Amb 9" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=12" alt="Amb 10" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=12" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=12" alt="Amb 12" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=13" alt="Amb 13" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=12" alt="Amb 14" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1473186578172-c141e6798cf4?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=15" alt="Amb 15" loading="lazy"></div>
+        <div class="item"><img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=16" alt="Amb 16" loading="lazy"></div>
+      </div>
+    </section>
+
+    <!-- BRANCHES -->
+    <section id="branches" aria-labelledby="branchesHeading">
+      <h2 id="branchesHeading" class="section-title">Our Branches</h2>
+      <p class="lead">Visit us across three locations — all with the same commitment to fresh seafood and warm hospitality.</p>
+
+      <div class="row" style="margin-top:18px">
+        <div class="branch col fade-in" role="region" aria-label="Jakarta branch">
+          <h3>Jakarta</h3>
+          <p><strong>Address:</strong> Jln. Raya Pondok Gede Taman Anggrek Indonesia Permai, Jakarta 13560 Indonesia</p>
+          <p><strong>Hours:</strong> Mon–Sun: 11:00 — 22:30</p>
+          <p><strong>Phone:</strong> <a class="call" href="tel:+621234567890">+62 12 3456 7890</a></p>
+          <p style="color:var(--muted);margin-top:6px">Parking available • Private dining on request</p>
+        </div>
+
+        <div class="branch col fade-in" role="region" aria-label="Bogor branch">
+          <h3>Kota Bogor</h3>
+          <p><strong>Address:</strong> Lokasinya di Depan Pintu Tol Sentul Selatan-2 The Grand Sentul City, Kota Bogor</p>
+          <p><strong>Hours:</strong> Mon–Sun: 11:00 — 22:00</p>
+          <p><strong>Phone:</strong> <a class="call" href="tel:+628112233445">+62 811-2233-445</a></p>
+          <p style="color:var(--muted);margin-top:6px">Family-friendly • Outdoor seating</p>
+        </div>
+
+        <div class="branch col fade-in" role="region" aria-label="Lampung branch">
+          <h3>Lampung</h3>
+          <p><strong>Address:</strong> Jl. Teuku Umar No. 4 Gunung Sari, Enggal, Bandar Lampung 35111 Indonesia</p>
+          <p><strong>Hours:</strong> Mon–Sun: 11:00 — 21:30</p>
+          <p><strong>Phone:</strong> <a class="call" href="tel:+62899887766">+62 899-8877-66</a></p>
+          <p style="color:var(--muted);margin-top:6px">Local fish selection • Great sunset views</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;color:var(--muted)">Tip: Mobile users can tap the phone numbers to call directly.</p>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" aria-labelledby="menuHeading" class="secondary">
+      <h2 id="menuHeading" class="section-title">Menu</h2>
+      <p class="lead">Six curated categories — each dish lists price and dietary tags. Our menu changes seasonally to highlight fresh catch.</p>
+
+      <!-- menu navigation -->
+      
+      <div class="menu-grid">
+        <!-- Appetizers -->
+        <div id="cat-apps" class="menu-cat fade-in">
+          <h3>Sup Gurame Fillet</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/Sup Gurame Fillet Jahe.png" alt=""></div>
+            <div class="meta">
+              <div class="name">Jahe</div>
+
+            </div>
+
+          </div>
+
+          <div class="menu-item">
+          
+          </div>
+        </div>
+
+        <!-- Seafood Platters -->
+        <div id="cat-sea" class="menu-cat fade-in">
+          <h3>Udang Bakar</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/Udang Bakar Madu.png" alt=""></div>
+            <div class="meta">
+              <div class="name">Madu</div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div id="cat-noodles" class="menu-cat fade-in">
+          <h3>Udang Goreng</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/telur asin.jpg" alt=""></div>
+            <div class="meta">
+              <div class="name">Telur Asin</div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div id="cat-pasta" class="menu-cat fade-in">
+          <h3>Lain-Lain</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/lemon.png" alt=""></div>
+            <div class="meta">
+              <div class="name">Lemon Squash</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Desserts -->
+        <div id="cat-dessert" class="menu-cat fade-in">
+          <h3>Cumi Goreng</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/Cumi Balado Pete.png" alt=""></div>
+            <div class="meta">
+              <div class="name">Cumi Balado Pete</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beverages -->
+        <div id="cat-bev" class="menu-cat fade-in">
+          <h3>Teri  Balado</h3>
+          <div class="menu-item">
+            <div class="thumb"><img src="images/jengkol.png" alt=""></div>
+            <div class="meta">
+              <div class="name">Teri Balado Jengkol</div>
+            </div>
+          </div>
+        </div>
+      </div>
+     <p style="text-align:center;"> <b><a href="Menu.html" target="_blank">See Full Filtered Menu</a></b></p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" aria-labelledby="aboutHeading">
+      <h2 id="aboutHeading" class="section-title">About Us</h2>
+      <p class="lead">Karimata was born from a love for coastline flavors and family recipes. Our chefs travel to coastal markets daily to source the freshest fish and shellfish. We blend Indonesian tradition with contemporary plating and Asian techniques.</p>
+
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;align-items:center">
+        <div style="flex:1;min-width:280px">
+          <h3 style="margin-top:0">Our Mission</h3>
+          <ul style="color:var(--muted);line-height:1.6">
+            <li>Serve sustainably sourced seafood with respect to local fishing communities.</li>
+            <li>Deliver authentic Indonesian & Asian flavors with modern culinary craft.</li>
+            <li>Create warm, memorable dining experiences for families and food lovers.</li>
+          </ul>
+        </div>
+
+        <div style="flex:1;min-width:280px">
+          <h3 style="margin-top:0">Meet the Chef</h3>
+          <div class="team-grid">
+            <div class="team-member">
+              <div class="member-photo">
+                <img src="https://plus.unsplash.com/premium_photo-1661778091956-15dbe6e47442?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chef">
+              </div>
+              <div style="margin-top:10px;font-weight:700">Chef Raden</div>
+              <div style="color:var(--muted);font-size:.95rem;margin-top:6px">Head Chef — 15 years of coastal Indonesian cuisine experience. Passionate about sustainable fishing & spice blends.</div>
+            </div>
+
+            <div class="team-member">
+              <div class="member-photo">
+                <img src="https://plus.unsplash.com/premium_photo-1687697861242-03e99059e833?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Sous Chef">
+              </div>
+              <div style="margin-top:10px;font-weight:700">Chef Rehan</div>
+              <div style="color:var(--muted);font-size:.95rem;margin-top:6px">Specialist in seafood grilling and condiments.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS & INSTAGRAM -->
+    <section id="reviews" aria-labelledby="reviewsHeading" class="secondary">
+      <h2 id="reviewsHeading" class="section-title">Reviews & Social</h2>
+      <p class="lead">What customers say — real feedback from our guests and the latest from our Instagram.</p>
+
+      <div class="testi-grid" style="margin-top:18px">
+        <div class="testi fade-in">
+          <div style="font-weight:700">“Unforgettable flavors — the sambal prawns were spectacular.”</div>
+          <div style="color:var(--muted);margin-top:6px">— Aisyah, Jakarta</div>
+        </div>
+        <div class="testi fade-in">
+          <div style="font-weight:700">“Family-friendly, great service and fresh seafood.”</div>
+          <div style="color:var(--muted);margin-top:6px">— Irfan, Bogor</div>
+        </div>
+        <div class="testi fade-in">
+          <div style="font-weight:700">“Lovely ambiance for dinner with a view.”</div>
+          <div style="color:var(--muted);margin-top:6px">— Lina, Lampung</div>
+        </div>
+      </div>
+
+      <!-- Instagram embed placeholder -->
+      <div style="margin-top:18px">
+        <h4 style="margin:0 0 10px">Instagram</h4>
+        <!-- Replace the div below with a live embed from Instagram or a widget -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <!-- sample thumbnails (these are sample images; swap with real IG) -->
+          <a href="#" aria-label="Instagram post" style="width:110px;height:110px;display:block;border-radius:8px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=27" alt="IG sample" loading="lazy">
+          </a>
+          <a href="#" style="width:110px;height:110px;display:block;border-radius:8px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=28" alt="IG sample 2" loading="lazy">
+          </a>
+          <a href="#" style="width:110px;height:110px;display:block;border-radius:8px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=29" alt="IG sample 3" loading="lazy">
+          </a>
+          <a href="#" style="width:110px;height:110px;display:block;border-radius:8px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&s=30" alt="IG sample 4" loading="lazy">
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROMOTIONS -->
+    <section id="specials" aria-labelledby="specialsHeading">
+      <h2 id="specialsHeading" class="section-title">Promotions & Events</h2>
+      <p class="lead">Limited-time offers and seasonal events.</p>
+
+      <div class="row" style="margin-top:12px">
+        <div class="col fade-in" style="min-width:240px">
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(14,165,163,0.06), rgba(255,107,74,0.04))">
+            <h4>Weekday Lunch Set</h4>
+            <p style="color:var(--muted);margin-top:6px">Mon–Fri 11:00–15:00 — 2-course lunch set starting at Rp 80,000</p>
+            <a class="btn" href="#order" style="margin-top:8px;display:inline-block">Order Lunch</a>
+          </div>
+        </div>
+
+        <div class="col fade-in" style="min-width:240px">
+          <div style="padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(14,165,163,0.04), rgba(255,107,74,0.06))">
+            <h4>Seafood Fest — Monthly</h4>
+            <p style="color:var(--muted);margin-top:6px">Live music & tasting menu — last Saturday of every month. RSVP required.</p>
+            <a class="btn secondary" href="#booking" style="margin-top:8px;display:inline-block">Reserve</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container footer-top">
+        <div>
+          <h4 style="color:#fff;margin:0 0 8px">Jakarta</h4>
+          <div style="color:var(--muted)">Jln. Raya Pondok Gede Taman Anggrek Indonesia Permai, Jakarta 13560</div>
+          <div style="margin-top:8px"><a href="tel:+621234567890" class="call">+62 12 3456 7890</a></div>
+          <div style="margin-top:8px"><a href="https://www.google.com/maps" target="_blank" rel="noopener" style="color:var(--muted)">View on map</a></div>
+        </div>
+
+        <div>
+          <h4 style="color:#fff;margin:0 0 8px">Kota Bogor</h4>
+          <div style="color:var(--muted)">Lokasinya di Depan Pintu Tol Sentul Selatan-2 The Grand Sentul City, Kota Bogor</div>
+          <div style="margin-top:8px"><a href="tel:+628112233445" class="call">+62 811-2233-445</a></div>
+          <div style="margin-top:8px"><a href="#" style="color:var(--muted)">View on map</a></div>
+        </div>
+
+        <div>
+          <h4 style="color:#fff;margin:0 0 8px">Lampung</h4>
+          <div style="color:var(--muted)">Lampung city</div>
+          <div style="margin-top:8px"><a href="tel:+62899887766" class="call">+62 899-8877-66</a></div>
+          <div style="margin-top:8px"><a href="#" style="color:var(--muted)">View on map</a></div>
+        </div>
+      </div>
+
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap">
+        <div style="display:flex;gap:12px;align-items:center">
+          <!-- Social icons (replace hrefs) -->
+          <a href="https://instagram.com/" target="_blank" aria-label="Instagram" style="color:var(--muted)">Instagram</a> ·
+          <a href="https://facebook.com/" target="_blank" aria-label="Facebook" style="color:var(--muted)">Facebook</a> ·
+          <a href="https://tiktok.com/" target="_blank" aria-label="TikTok" style="color:var(--muted)">TikTok</a>
+        </div>
+
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="#menu">Menu</a>
+          <a href="#dishes">Dishes</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#booking">Booking</a>
+          <a href="#about">About</a>
+        </nav>
+      </div>
+
+      <div style="text-align:center;color:rgba(255,255,255,0.18);margin-top:18px;font-size:.95rem">
+        © <span id="yr"></span> Karimata Restaurant — All rights reserved.
+      </div>
+    </footer>
+  </main>
+
+  <!-- Modal / Lightbox for gallery (simple) -->
+  <div id="lightbox" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.85);z-index:120">
+    <button id="lbClose" style="position:absolute;top:22px;right:22px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.06);border:0;color:white">✕</button>
+    <img id="lbImg" src="" alt="Preview" style="max-width:94%;max-height:84%;border-radius:10px;box-shadow:0 20px 80px rgba(0,0,0,0.8)">
+  </div>
+
+  <script>
+    // =========================
+    // SMALL INTERACTIONS & ANIMATIONS
+    // =========================
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){
+          e.preventDefault();
+          target.scrollIntoView({behavior:'smooth',block:'start'});
+          // collapse mobile menu if open
+          if(window.innerWidth < 900) toggleNav(false);
+        }
+      });
+    });
+
+    // Mobile nav toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navList = document.getElementById('navList');
+    mobileToggle && mobileToggle.addEventListener('click', ()=> toggleNav());
+    function toggleNav(force){
+      const open = force === undefined ? navList.style.display !== 'flex' : force;
+      navList.style.display = open ? 'flex' : 'none';
+      navList.style.flexDirection = open ? 'column' : '';
+      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    // IntersectionObserver for reveal animations
+    const io = new IntersectionObserver((entries)=> {
+      entries.forEach(ent=>{
+        if(ent.isIntersecting){
+          ent.target.classList.add('show');
+          io.unobserve(ent.target);
+        }
+      });
+    }, {threshold:0.12});
+
+    document.querySelectorAll('.fade-in, .zoom-in').forEach(el => io.observe(el));
+
+    // Gallery lightbox
+    document.querySelectorAll('.gallery-grid img, .item img').forEach(img=>{
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', ()=> {
+        document.getElementById('lbImg').src = img.src;
+        document.getElementById('lightbox').style.display = 'flex';
+      });
+    });
+    document.getElementById('lbClose').addEventListener('click', ()=> document.getElementById('lightbox').style.display = 'none');
+    document.getElementById('lightbox').addEventListener('click', (e)=> {
+      if(e.target.id === 'lightbox') document.getElementById('lightbox').style.display = 'none';
+    });
+
+    // Menu nav quick-jump
+    document.querySelectorAll('#menuNav button').forEach(btn=>{
+      btn.addEventListener('click', ()=> {
+        const id = btn.dataset.target;
+        document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'});
+      });
+    });
+
+    // Accessibility: escape closes lightbox
+    document.addEventListener('keydown', (e)=> {
+      if(e.key === 'Escape') document.getElementById('lightbox').style.display = 'none';
+    });
+
+    // Lazy loading improvement (for browsers without native support)
+    if('loading' in HTMLImageElement.prototype === false){
+      const imgs = document.querySelectorAll('img[loading="lazy"]');
+      imgs.forEach(img=>{
+        const src = img.dataset.src || img.src;
+        if(src) img.src = src;
+      });
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Karimata FullMenu</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070707;
+      --card:#0f0f10;
+      --muted:#bdb7a9;
+      --accent:#caa14f; /* gold */
+      --glass: rgba(255,255,255,0.03);
+    }
+
+    body{
+      background: linear-gradient(180deg, #050505 0%, #0b0b0b 100%);
+      color: #eee;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      padding: 32px 0;
+    }
+
+    .menu-wrap{
+      max-width:1200px;
+      margin: 0 auto;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .brand .logo{
+      width:52px;
+      height:52px;
+      border-radius:10px;
+      background: linear-gradient(135deg, rgba(202,161,79,0.12), rgba(202,161,79,0.04));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(202,161,79,0.12);
+      color:var(--accent);
+      font-weight:700;
+      font-size:18px;
+      box-shadow: 0 6px 24px rgba(202,161,79,0.06);
+    }
+    .brand h1{
+      font-size:20px;
+      margin:0;
+      letter-spacing:0.4px;
+    }
+    .brand p{ margin:0; color:var(--muted); font-size:13px }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+      align-items:center;
+    }
+
+    .control-input{
+      flex:1 1 320px;
+    }
+
+    .pill-wrap {
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      margin-bottom:18px;
+    }
+
+    .nav-pills .nav-link {
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin: 3px;
+      font-size:14px;
+      transition: all .18s ease;
+      border:1px solid transparent;
+      background: transparent;
+    }
+    .nav-pills .nav-link.active{
+      background: linear-gradient(90deg, rgba(202,161,79,0.1), rgba(202,161,79,0.04));
+      color: var(--accent);
+      box-shadow: 0 6px 20px rgba(202,161,79,0.05);
+      border:1px solid rgba(202,161,79,0.08);
+    }
+
+    .menu-grid{ margin-top:8px; }
+    .menu-card{
+      background: linear-gradient(180deg, var(--card), rgba(14,14,14,0.9));
+      border-radius: 12px;
+      padding: 14px;
+      border:1px solid rgba(255,255,255,0.02);
+      transition: transform .18s ease, box-shadow .18s ease;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .menu-card:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.6), 0 6px 30px rgba(202,161,79,0.06);
+      border-color: rgba(202,161,79,0.06);
+    }
+
+    .menu-item-title{
+      font-weight:600;
+      color:#fff;
+      margin-bottom:6px;
+    }
+    .menu-item-desc{
+      color:var(--muted);
+      font-size:13px;
+      min-height:36px;
+      margin-bottom:10px;
+    }
+
+    .badge-cat{
+      background: rgba(202,161,79,0.06);
+      color:var(--accent);
+      font-weight:600;
+      border:1px solid rgba(202,161,79,0.04);
+      padding:5px 8px;
+      border-radius:8px;
+      font-size:12px;
+    }
+
+    .small-muted{ color:var(--muted); font-size:13px }
+
+    /* highlight search match */
+    .hl { background: linear-gradient(90deg, rgba(250,220,140,0.12), rgba(250,220,140,0.06)); padding:0 4px; border-radius:3px; color:var(--accent); }
+
+    /* Responsive tweaks */
+    @media (max-width:767px){
+      .brand h1{ font-size:17px }
+      .menu-grid .col-md-4{ flex: 0 0 50%; max-width:50%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="menu-wrap">
+
+    <div class="brand">
+      <div class="logo">R</div>
+      <div>
+        <h1>Karimata Full Menu</h1>
+        <p class="small-muted">Menu — searchable • filterable • sortable</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input id="searchInput" type="search" class="form-control control-input" placeholder="Search menu (type any word) — live results">
+      <select id="sortSelect" class="form-select" style="max-width:200px">
+        <option value="default">Sort: Default</option>
+        <option value="az">Sort: A → Z</option>
+        <option value="za">Sort: Z → A</option>
+      </select>
+      <div class="btn-group" role="group" aria-label="filter">
+        <button id="showAllBtn" type="button" class="btn btn-outline-light btn-sm" title="Show all categories">All</button>
+        <button id="topMatchBtn" type="button" class="btn btn-outline-light btn-sm" title="Show only matches">Matches</button>
+      </div>
+    </div>
+
+    <div class="pill-wrap">
+      <ul class="nav nav-pills flex-wrap" id="categoryPills" role="tablist">
+        <!-- category pills will be inlined here -->
+        <li class="nav-item"><a class="nav-link active" data-cat="all" href="#" onclick="selectCategory('all', this)">All Categories</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="New Menu" href="#" onclick="selectCategory('New Menu', this)">New Menu</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Sup Gurame Fillet+Sayuran" href="#" onclick="selectCategory('Sup Gurame Fillet+Sayuran', this)">Sup Gurame Fillet+Sayuran</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Udang Bakar" href="#" onclick="selectCategory('Udang Bakar', this)">Udang Bakar</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Udang Goreng" href="#" onclick="selectCategory('Udang Goreng', this)">Udang Goreng</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Sup Udang" href="#" onclick="selectCategory('Sup Udang', this)">Sup Udang</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Aneka Sambal" href="#" onclick="selectCategory('Aneka Sambal', this)">Aneka Sambal</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Teri  Balado" href="#" onclick="selectCategory('Teri  Balado', this)">Teri Balado</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Cumi Goreng" href="#" onclick="selectCategory('Cumi Goreng', this)">Cumi Goreng</a></li>
+        <li class="nav-item"><a class="nav-link" data-cat="Lain-Lain" href="#" onclick="selectCategory('Lain-Lain', this)">Lain-Lain</a></li>
+      </ul>
+    </div>
+
+    <div id="menuList" class="menu-grid">
+      <div class="row g-4" id="itemsRow">
+
+        <!-- ==== NEW MENU ==== -->
+        <div class="col-md-4" data-category="New Menu">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Gurame Goreng Honje</div>
+              <div class="menu-item-desc small-muted">Classic gurame dish with honje flavors.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">New Menu</span>
+              <small class="small-muted">Fish</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="New Menu">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Gurame Goreng Telur Asin</div>
+              <div class="menu-item-desc small-muted">Gurame with salted-egg style coating.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">New Menu</span>
+              <small class="small-muted">Fish</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="New Menu">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Gurame Sambal Matah</div>
+              <div class="menu-item-desc small-muted">Light spicy sambal matah over gurame.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">New Menu</span>
+              <small class="small-muted">Fish</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="New Menu">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Kuah Kaning</div>
+              <div class="menu-item-desc small-muted">Warm gurame soup in kuah kaning style.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">New Menu</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Sup Gurame Fillet+Sayuran ==== -->
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Jahe</div>
+              <div class="menu-item-desc small-muted">Gurame fillet soup with ginger.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Asam Kemangi</div>
+              <div class="menu-item-desc small-muted">Sour basil gurame fillet soup.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Pedas Kemangi</div>
+              <div class="menu-item-desc small-muted">Spicy basil fillet soup.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Honje</div>
+              <div class="menu-item-desc small-muted">Fillet with honje soup base.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Brocoli</div>
+              <div class="menu-item-desc small-muted">Fillet soup with broccoli and herbs.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet Pakcoy</div>
+              <div class="menu-item-desc small-muted">Comforting fillet soup with pakcoy.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Gurame Fillet+Sayuran">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Gurame Fillet+Sayuran</div>
+              <div class="menu-item-desc small-muted">Assorted vegetables with gurame fillet soup.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Gurame Fillet+Sayuran</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Udang Bakar ==== -->
+        <div class="col-md-4" data-category="Udang Bakar">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Bakar Madu</div>
+              <div class="menu-item-desc small-muted">Grilled prawns with honey glaze.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Bakar</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Bakar">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Bakar Kecap</div>
+              <div class="menu-item-desc small-muted">Grilled prawns with sweet soy.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Bakar</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Bakar">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Bakar Sambal Ijo</div>
+              <div class="menu-item-desc small-muted">Grilled prawns with green chili sambal.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Bakar</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Udang Goreng ==== -->
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Telur Asin</div>
+              <div class="menu-item-desc small-muted">Fried prawns in salted-egg style.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Sambal Matah</div>
+              <div class="menu-item-desc small-muted">Fried prawns with crunchy sambal matah.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Mentega</div>
+              <div class="menu-item-desc small-muted">Butter fried prawns, rich and savory.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Cabe Rawit</div>
+              <div class="menu-item-desc small-muted">Fiery prawns with bird's-eye chili.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Lada Hitam</div>
+              <div class="menu-item-desc small-muted">Black pepper fried prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Rica-Rica</div>
+              <div class="menu-item-desc small-muted">Spicy Manado style prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Balado</div>
+              <div class="menu-item-desc small-muted">Prawns in Balado chili sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Balado Pete</div>
+              <div class="menu-item-desc small-muted">Balado prawns with petai.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Asam Pedas</div>
+              <div class="menu-item-desc small-muted">Tangy and spicy fried prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Saus Tiram</div>
+              <div class="menu-item-desc small-muted">Oyster sauce fried prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Saus Tauco</div>
+              <div class="menu-item-desc small-muted">Prawns with tauco-style sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Tepuna</div>
+              <div class="menu-item-desc small-muted">Crispy battered prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Mayonaise</div>
+              <div class="menu-item-desc small-muted">Prawns tossed in mayonnaise.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Udang Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Udang Goreng Asam Manis</div>
+              <div class="menu-item-desc small-muted">Sweet & sour prawns.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Udang Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Sup Udang ==== -->
+        <div class="col-md-4" data-category="Sup Udang">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Udang Asam Kemangi</div>
+              <div class="menu-item-desc small-muted">Sour prawns soup with basil.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Udang</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Sup Udang">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sup Udang Pedas Kemangi</div>
+              <div class="menu-item-desc small-muted">Spicy basil prawn soup.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Sup Udang</span>
+              <small class="small-muted">Soup</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Aneka Sambal ==== -->
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Matah</div>
+              <div class="menu-item-desc small-muted">Fresh Balinese sambal with shallots.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Korek</div>
+              <div class="menu-item-desc small-muted">Spicy sambal korek, hot & sharp.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Kecap</div>
+              <div class="menu-item-desc small-muted">Sweet soy chili dip.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Bawang</div>
+              <div class="menu-item-desc small-muted">Garlicky chili sambal.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Terasi</div>
+              <div class="menu-item-desc small-muted">Fermented shrimp paste chili.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Tomat</div>
+              <div class="menu-item-desc small-muted">Tomato-based sambal dip.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Mangga</div>
+              <div class="menu-item-desc small-muted">Green mango spicy sambal.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Honje</div>
+              <div class="menu-item-desc small-muted">Honje-based sambal, aromatic.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Terasi Dadakan</div>
+              <div class="menu-item-desc small-muted">Freshly prepared terasi sambal.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Tomat Dadakan</div>
+              <div class="menu-item-desc small-muted">Fresh tomato sambal prepared daily.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Limau Dadakan</div>
+              <div class="menu-item-desc small-muted">Citrus sambal to brighten dishes.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Aneka Sambal">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Sambal Bawang Dadakan</div>
+              <div class="menu-item-desc small-muted">Fresh garlic chili sambal.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Aneka Sambal</span>
+              <small class="small-muted">Sambal</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Teri Balado ==== -->
+        <div class="col-md-4" data-category="Teri  Balado">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Teri Balado</div>
+              <div class="menu-item-desc small-muted">Smallanchovies in balado sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Teri  Balado</span>
+              <small class="small-muted">Side</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Teri  Balado">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Teri Balado Pete</div>
+              <div class="menu-item-desc small-muted">Teri with petai and balado chilies.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Teri  Balado</span>
+              <small class="small-muted">Side</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Teri  Balado">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Teri Balado Jengkol</div>
+              <div class="menu-item-desc small-muted">Teri with jengkol in balado style.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Teri  Balado</span>
+              <small class="small-muted">Side</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Cumi Goreng ==== -->
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Telur Asin</div>
+              <div class="menu-item-desc small-muted">Fried squid with salted egg.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Balado Pete</div>
+              <div class="menu-item-desc small-muted">Squid in balado with petai.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Asam Pedas</div>
+              <div class="menu-item-desc small-muted">Tangy & spicy fried squid.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Kremes</div>
+              <div class="menu-item-desc small-muted">Crispy battered squid with kremes.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Rica-Rica</div>
+              <div class="menu-item-desc small-muted">Spicy Manado-style squid.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Mayonise</div>
+              <div class="menu-item-desc small-muted">Squid tossed with mayonnaise.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Saus Tiram</div>
+              <div class="menu-item-desc small-muted">Squid in oyster sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Oseng Oseng Oakcoy</div>
+              <div class="menu-item-desc small-muted">Stir-fried squid with pakcoy.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Tepung</div>
+              <div class="menu-item-desc small-muted">Tempura-style fried squid.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Tauco</div>
+              <div class="menu-item-desc small-muted">Squid with tauco-style sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Goreng Asam Manis</div>
+              <div class="menu-item-desc small-muted">Sweet & sour squid dish.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-category="Cumi Goreng">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Cumi Balado</div>
+              <div class="menu-item-desc small-muted">Cumi in spicy balado sauce.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Cumi Goreng</span>
+              <small class="small-muted">Seafood</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== Lain-Lain (large list) ==== -->
+        <!-- I added each item you supplied under Lain-Lain; no prices/photos -->
+        <!-- Start Lain-Lain items -->
+        <div class="col-md-4" data-category="Lain-Lain">
+          <div class="menu-card">
+            <div>
+              <div class="menu-item-title">Jus Stamina</div>
+              <div class="menu-item-desc small-muted">Fresh juice blend to boost stamina.</div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge-cat">Lain-Lain</span>
+              <small class="small-muted">Beverage</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- I'll continue listing every 'Lain-Lain' item you provided -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Glucoless</div><div class="menu-item-desc small-muted">Low sugar juice option.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Mamas</div><div class="menu-item-desc small-muted">Signature house juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Munser</div><div class="menu-item-desc small-muted">Tropical mixed juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Choleles</div><div class="menu-item-desc small-muted">Classic fruit juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Tensiles</div><div class="menu-item-desc small-muted">Unique house blend.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Strawberry</div><div class="menu-item-desc small-muted">Strawberry juice, fresh.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Jeruk</div><div class="menu-item-desc small-muted">Freshly squeezed orange juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Pepaya</div><div class="menu-item-desc small-muted">Papaya juice, smooth.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Mangga</div><div class="menu-item-desc small-muted">Mango juice, seasonal.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Lemon</div><div class="menu-item-desc small-muted">Zesty lemon refreshment.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Tomat</div><div class="menu-item-desc small-muted">Tomato juice, savory.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Wortel</div><div class="menu-item-desc small-muted">Carrot juice, healthy.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Alpukat</div><div class="menu-item-desc small-muted">Creamy avocado juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Sisak</div><div class="menu-item-desc small-muted">Traditional local juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Semangka</div><div class="menu-item-desc small-muted">Watermelon juice, refreshing.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Jambu</div><div class="menu-item-desc small-muted">Guava juice, fruity.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Belimbing</div><div class="menu-item-desc small-muted">Starfruit juice, tangy.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Peras</div><div class="menu-item-desc small-muted">Pressed juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Peras Murni</div><div class="menu-item-desc small-muted">100% pure pressed juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Campuran</div><div class="menu-item-desc small-muted">Mixed fruit juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jus Kulit Semangka</div><div class="menu-item-desc small-muted">Unique watermelon rind juice.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Sanghai</div><div class="menu-item-desc small-muted">Chilled dessert drink.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Teh Tawar</div><div class="menu-item-desc small-muted">Plain tea.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Buah Yogurt</div><div class="menu-item-desc small-muted">Fruit with yogurt dessert.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Cendol</div><div class="menu-item-desc small-muted">Traditional cendol dessert.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Lemon Squash</div><div class="menu-item-desc small-muted">Lemon with bubbly refreshment.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Teh Manis</div><div class="menu-item-desc small-muted">Sweet tea.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Orange Squash</div><div class="menu-item-desc small-muted">Orange refreshment with syrup.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Teh Lemon</div><div class="menu-item-desc small-muted">Lemon-infused tea.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Yogurt</div><div class="menu-item-desc small-muted">Plain yogurt option.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Teh Botol</div><div class="menu-item-desc small-muted">Bottled tea.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kelapa Muda</div><div class="menu-item-desc small-muted">Fresh young coconut.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Air Mineral</div><div class="menu-item-desc small-muted">Mineral water.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kelapa Muda Jeruk Nipis</div><div class="menu-item-desc small-muted">Young coconut with lime.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Nata De Coco</div><div class="menu-item-desc small-muted">Chilled nata de coco drink.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kelapa Muda Jeruk Alpukat</div><div class="menu-item-desc small-muted">Young coconut with avocado & citrus.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Coca Cola/Fanta</div><div class="menu-item-desc small-muted">Soft drink options.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Susu Putih/Coklat</div><div class="menu-item-desc small-muted">White or chocolate milk.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Soda Water</div><div class="menu-item-desc small-muted">Sparkling water.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">MilkShake(Cocolate , Vanilla, Strawberry)</div><div class="menu-item-desc small-muted">Milkshakes in 3 flavours.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Soda Susu/Gembira</div><div class="menu-item-desc small-muted">Sweet soda milk drink.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Campur</div><div class="menu-item-desc small-muted">Mixed ice dessert.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Kelapa Jeruk</div><div class="menu-item-desc small-muted">Coconut & orange ice drink.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Es Jeruk Nata De Coco</div><div class="menu-item-desc small-muted">Orange with nata de coco.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Dessert</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Gurame Pedas Kemangi</div><div class="menu-item-desc small-muted">Spicy basil gurame soup (listed here).</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jeruk Nata De Coco</div><div class="menu-item-desc small-muted">Citrus nata de coco drink.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kelapa Musa Jeruk Peras</div><div class="menu-item-desc small-muted">Coconut & fresh squeezed citrus.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kopi Hitam</div><div class="menu-item-desc small-muted">Black coffee.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Pineapple Fantasy(Hanya tersedia di karimata tmii)</div><div class="menu-item-desc small-muted">Limited pineapple special (location note).</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Special</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kopi Susu</div><div class="menu-item-desc small-muted">Coffee with milk.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jahe Susu Kayu Manis</div><div class="menu-item-desc small-muted">Ginger milk with cinnamon.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Cappuccino</div><div class="menu-item-desc small-muted">Classic cappuccino.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Beverage</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Lalapan</div><div class="menu-item-desc small-muted">Assorted fresh salad sides.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Side</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sayur Asem</div><div class="menu-item-desc small-muted">Tamarind vegetable soup.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <!-- More Lain-Lain vegetables and mains -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Cah Kanhkung Polos</div><div class="menu-item-desc small-muted">Stir-fried water spinach plain.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Cah Kanhkung Terasi</div><div class="menu-item-desc small-muted">Water spinach with terasi.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Cah Kanhkung Tauco</div><div class="menu-item-desc small-muted">Water spinach with tauco.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tauge Cah Polos</div><div class="menu-item-desc small-muted">Plain stir-fried bean sprouts.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Karedok</div><div class="menu-item-desc small-muted">Raw vegetable salad with peanut sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Salad</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gado-Gado</div><div class="menu-item-desc small-muted">Mixed vegetables with peanut sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Salad</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">tauge Cah ikan Asin</div><div class="menu-item-desc small-muted">Bean sprouts stir-fried with salted fish.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Oseng-Oseng Pancoy</div><div class="menu-item-desc small-muted">Stir-fried pancoy with spices.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Brocoli Bawang Putih</div><div class="menu-item-desc small-muted">Broccoli with garlic stir-fry.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Selada Tahu telur</div><div class="menu-item-desc small-muted">Salad with tofu & egg.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Salad</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Pakcoy Udang Rebon</div><div class="menu-item-desc small-muted">Pakcoy with dried shrimp topping.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Tahu Toge</div><div class="menu-item-desc small-muted">Tofu & bean sprouts soup.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup tahu+Sayuran</div><div class="menu-item-desc small-muted">Tofu soup with mixed vegetables.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">SupSayuran</div><div class="menu-item-desc small-muted">Mixed vegetable soup.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Terong Ikan Asin</div><div class="menu-item-desc small-muted">Eggplant with salted fish.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Terong Sambal Hijau</div><div class="menu-item-desc small-muted">Eggplant with green chili sambal.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Terong Penyet</div><div class="menu-item-desc small-muted">Smashed eggplant with sambal.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <!-- Many Gurame and Ayam variations listed under Lain-Lain -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Bakar Mentega</div><div class="menu-item-desc small-muted">Grilled gurame with butter.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Bakar Kecap</div><div class="menu-item-desc small-muted">Grilled gurame with sweet soy.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Bakar Sambal Ljo</div><div class="menu-item-desc small-muted">Grilled gurame with green sambal.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Bakar Kacang</div><div class="menu-item-desc small-muted">Grilled gurame with peanut sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Asam Pedas</div><div class="menu-item-desc small-muted">Fried gurame with sour & spicy sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Rica-Rica</div><div class="menu-item-desc small-muted">Spicy rica-rica fried gurame.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame GorengSambal Hijau</div><div class="menu-item-desc small-muted">Fried gurame with green chili sambal.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Sambal Bawang</div><div class="menu-item-desc small-muted">Fried gurame topped with sambal bawang.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Kremes</div><div class="menu-item-desc small-muted">Crispy gurame with crunchy crumbs.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Asam Manis</div><div class="menu-item-desc small-muted">Sweet & sour fried gurame.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Cabe Rawit</div><div class="menu-item-desc small-muted">Fried gurame with bird's-eye chili.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Kering</div><div class="menu-item-desc small-muted">Dry-style fried gurame.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Goreng Kecap</div><div class="menu-item-desc small-muted">Fried gurame with sweet soy.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Gurame Saus Tiram</div><div class="menu-item-desc small-muted">Gurame in oyster sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <!-- Ayam items -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Tepung</div><div class="menu-item-desc small-muted">Crispy battered fried chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Lada Hitam</div><div class="menu-item-desc small-muted">Black pepper fried chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Rica-Rica</div><div class="menu-item-desc small-muted">Spicy rica-rica chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Asam Pedas</div><div class="menu-item-desc small-muted">Sour & spicy fried chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Saus Tiram</div><div class="menu-item-desc small-muted">Chicken in oyster sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Kremes</div><div class="menu-item-desc small-muted">Crispy chicken with kremes.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Sambal Matah</div><div class="menu-item-desc small-muted">Chicken with sambal matah topping.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Asam Manis</div><div class="menu-item-desc small-muted">Sweet & sour fried chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Kemangi</div><div class="menu-item-desc small-muted">Fried chicken with basil flavor.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Goreng Cabe Rawit</div><div class="menu-item-desc small-muted">Spicy bird's eye chili chicken.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Oseng2 Pakcoy</div><div class="menu-item-desc small-muted">Chicken stir-fried with pakcoy.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Ayam Mayonaise</div><div class="menu-item-desc small-muted">Chicken with mayonnaise dressing.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Poultry</small></div></div></div>
+
+        <!-- Pete/Jengkol/Tahu/Tempe -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Pete Bakar/Goreng/Rebus</div><div class="menu-item-desc small-muted">Petai prepared multiple ways.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Side</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Pete Balado</div><div class="menu-item-desc small-muted">Petai in spicy balado sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Side</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Jengkol Balado</div><div class="menu-item-desc small-muted">Jengkol cooked in balado sauce.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Side</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tahu Goreng</div><div class="menu-item-desc small-muted">Deep-fried tofu.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tempe Goreng</div><div class="menu-item-desc small-muted">Fried tempeh.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tahu+Tempe Goreng</div><div class="menu-item-desc small-muted">Mixed fried tofu & tempeh.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tempe Mendoan</div><div class="menu-item-desc small-muted">Soft fried tempeh (Mendoan style).</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tahu Kresz</div><div class="menu-item-desc small-muted">Crunchy tofu variant.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Tempe Kesz</div><div class="menu-item-desc small-muted">Crispy tempeh variant.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Oseng Tahu</div><div class="menu-item-desc small-muted">Stir-fried tofu.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Oseng Tempe</div><div class="menu-item-desc small-muted">Stir-fried tempeh.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Vegetable</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Goreng Ikan Asin Jambal</div><div class="menu-item-desc small-muted">Fried salted jambal fish.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Fish</small></div></div></div>
+
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Kulit Tahu Goreng Tepung</div><div class="menu-item-desc small-muted">Crispy tofu skin in batter.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Snack</small></div></div></div>
+
+        <!-- Sup Cumi entries -->
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Cumi Asam Kemangi</div><div class="menu-item-desc small-muted">Sour squid soup with basil.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Cumi Pedas Kemangi</div><div class="menu-item-desc small-muted">Spicy basil squid soup.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Cumi Brocoli</div><div class="menu-item-desc small-muted">Squid soup with broccoli.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+        <div class="col-md-4" data-category="Lain-Lain"><div class="menu-card"><div><div class="menu-item-title">Sup Cumi+Sayuran</div><div class="menu-item-desc small-muted">Squid soup with mixed vegetables.</div></div><div class="d-flex justify-content-between align-items-center"><span class="badge-cat">Lain-Lain</span><small class="small-muted">Soup</small></div></div></div>
+
+        <!-- End itemsRow -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Basic functionality: search, filter (category), sort
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const itemsRow = document.getElementById('itemsRow');
+    const allCardsSelector = '#itemsRow .col-md-4';
+    const showAllBtn = document.getElementById('showAllBtn');
+    const topMatchBtn = document.getElementById('topMatchBtn');
+
+    let currentCategory = 'all';
+
+    function normalizeText(t){ return t.replace(/[^a-z0-9\s]/gi,'').toLowerCase(); }
+
+    function getVisibleCards(){
+      return Array.from(document.querySelectorAll(allCardsSelector));
+    }
+
+    function applySearchAndFilter(){
+      const q = normalizeText(searchInput.value.trim());
+      const cards = getVisibleCards();
+      let matchCount = 0;
+      cards.forEach(card => {
+        const title = card.querySelector('.menu-item-title').innerText;
+        const desc = card.querySelector('.menu-item-desc').innerText;
+        const category = card.dataset.category || '';
+        const hay = normalizeText(title + ' ' + desc + ' ' + category);
+        // category filter
+        const catPass = (currentCategory === 'all' || currentCategory === category);
+        const match = q === '' ? true : hay.includes(q);
+        const visible = (catPass && match);
+        card.style.display = visible ? '' : 'none';
+        // highlight if match
+        const titleEl = card.querySelector('.menu-item-title');
+        if(q && normalizeText(title).includes(q)){
+          // simple highlight: wrap matched fragment — safe small approach
+          const raw = title;
+          const idx = raw.toLowerCase().indexOf(q);
+          if(idx !== -1){
+            titleEl.innerHTML = raw.substring(0, idx) + '<span class="hl">' + raw.substring(idx, idx+q.length) + '</span>' + raw.substring(idx+q.length);
+          } else {
+            titleEl.innerHTML = raw;
+          }
+        } else {
+          // reset to plain text (we assume original is not HTML-suffixed)
+          titleEl.innerHTML = card.querySelector('.menu-item-title').textContent;
+        }
+        if(visible) matchCount++;
+      });
+
+      // if topMatch mode active, hide non-matches across categories (handled with currentCategory set to 'matches')
+      return matchCount;
+    }
+
+    function selectCategory(cat, el){
+      currentCategory = cat;
+      // pill active state
+      document.querySelectorAll('#categoryPills .nav-link').forEach(n => n.classList.remove('active'));
+      if(el) el.classList.add('active');
+      // special: if 'all' just show all and reapply search
+      applySearchAndFilter();
+      applySort(); // keep sorted
+    }
+
+    function applySort(){
+      const mode = sortSelect.value;
+      const cards = getVisibleCards().filter(c => c.style.display !== 'none');
+      const parent = itemsRow;
+      const sorted = cards.slice().sort((a,b)=>{
+        const ta = a.querySelector('.menu-item-title').innerText.trim().toLowerCase();
+        const tb = b.querySelector('.menu-item-title').innerText.trim().toLowerCase();
+        if(mode === 'az') return ta.localeCompare(tb);
+        if(mode === 'za') return tb.localeCompare(ta);
+        return 0;
+      });
+      if(mode === 'default') return; // original DOM order kept
+      // re-append in sorted order (preserve layout)
+      sorted.forEach(node => parent.appendChild(node));
+    }
+
+    // events
+    searchInput.addEventListener('input', () => {
+      applySearchAndFilter();
+      if(sortSelect.value !== 'default') applySort();
+    });
+
+    sortSelect.addEventListener('change', () => {
+      applySort();
+    });
+
+    showAllBtn.addEventListener('click', () => {
+      // reset category to all and show all
+      currentCategory = 'all';
+      document.querySelectorAll('#categoryPills .nav-link').forEach(n => n.classList.remove('active'));
+      document.querySelector('#categoryPills .nav-link[data-cat="all"]').classList.add('active');
+      applySearchAndFilter();
+    });
+
+    topMatchBtn.addEventListener('click', () => {
+      // toggle: show only cards matching current search (if none, do nothing)
+      const q = normalizeText(searchInput.value.trim());
+      if(!q) {
+        alert('Type a search term first to show matches only.');
+        return;
+      }
+      // set currentCategory to a sentinel so only matches show (the search logic accounts for query)
+      currentCategory = 'all';
+      document.querySelectorAll(allCardsSelector).forEach(c => {
+        // display/hide already handled by applySearchAndFilter
+      });
+      applySearchAndFilter();
+    });
+
+    // initial setup
+    selectCategory('all', document.querySelector('#categoryPills .nav-link[data-cat="all"]'));
+    applySearchAndFilter();
+
+  </script>
+</body>
+</html>
