@@ -6,6 +6,9 @@
   <title>Karimata Restaurant — Seafood · Asian · Indonesian</title>
   <meta name="description" content="Karimata Restaurant — Fresh seafood & authentic Asian & Indonesian flavors. Book a table, order online, explore our menu and galleries." />
   <!-- Google Fonts -->
+       <link rel="stylesheet" href="hero12.css">
+       <link rel="stylesheet" href="weekendcta.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     /* =========================
@@ -129,11 +132,6 @@ nav a.navlink:hover {
   color: white;
   box-shadow: 0 8px 30px rgba(14,165,163,0.12);
 }
-.btn.secondary {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.06);
-  color: var(--card);
-}
 
 /* Mobile toggle - hidden on desktop */
 .mobile-toggle {
@@ -236,6 +234,7 @@ nav a.navlink:hover {
        SECTION STYLING
        ========================= */
     section{padding:48px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+    
     section.secondary{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent)}
     h2.section-title{font-family:Playfair Display;margin:0 0 12px;font-size:1.6rem;color:#fff}
     p.lead{color:var(--muted);max-width:60ch}
@@ -458,42 +457,57 @@ nav a.navlink:hover {
             <a class="btn secondary" href="#booking" role="button">Book a Table</a>
           </div>
 
-          <div class="stats" style="margin-top:14px">
-            <div class="stat-card">
-              <div class="num">120+</div>
-              <div class="muted">Dishes</div>
-            </div>
-            <div class="stat-card">
-              <div class="num">4.6★</div>
-              <div class="muted">Customer Rating</div>
-            </div>
-            <div class="stat-card">
-              <div class="num">3 Branches</div>
-              <div class="muted">Jakarta · Bogor · Lampung</div>
-            </div>
-          </div>
         </div>
+<section class="km-hero">
+  <div class="km-hero-container">
 
-        <div class="hero-photo zoom-in" aria-hidden="true">
-          <!-- Replace this image with a high-res seafood/Asian restaurant hero -->
-          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Karimata seafood hero image" loading="lazy">
-        </div>
+    <!-- LEFT TEXT COLUMN -->
+    <div class="km-hero-text">
+      <h1>Experience Authentic Flavours</h1>
+
+      <p>Seafood • Asian • Indonesian Cuisine</p>
+      <p class="km-hero-sub">Crafted fresh with passion & perfection</p><br/>
+
+      <!-- NEW CONTENT -->
+      <p class="km-hero-line">120+ Dishes</p>
+
+      <div class="km-hero-rating">
+        <span class="star">★</span> 4.6 Customer Rating<br/>
+      </div>
+
+      <p class="km-hero-branches">Our Branches: <br/>
+        <span>Jakarta</span> · <span>Bogor</span> · <span>Lampung</span>
+      </p>
+    </div>
+
+    <!-- RIGHT IMAGE COLUMN -->
+    <div class="km-hero-image">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+           alt="Restaurant Dish">
+    </div>
+
+  </div>
+</section>
+
       </div>
     </section>
 
     <!-- CTA BAR (sticky promo) -->
-    <section class="secondary" aria-hidden="false">
-      <div class="container" style="display:flex;gap:18px;align-items:center;justify-content:space-between">
-        <div>
-          <h3 style="margin:0">Weekend Seafood Platter — 20% OFF</h3>
-          <p style="margin:.35rem 0 0;color:var(--muted)">Available Friday to Sunday — family platter for 2–4 with special sambal.</p>
-        </div>
-        <div style="display:flex;gap:12px;align-items:center">
-          <a class="btn" href="#order">Order Platter</a>
-          <a class="btn secondary" href="#booking">Reserve Now</a>
-        </div>
-      </div>
-    </section>
+    <section class="km-sec-offer">
+  <div class="km-sec-container">
+
+    <div class="km-sec-text">
+      <h3>Weekend Seafood Platter — 20% OFF</h3>
+      <p>Available Friday to Sunday — Family platter for 2–4 with special sambal.</p>
+    </div>
+
+    <div class="km-sec-actions">
+      <a href="#order" class="km-sec-btn primary">Order Platter</a>
+      <a href="#booking" class="km-sec-btn secondary">Reserve Now</a>
+    </div>
+
+  </div>
+</section>
 
     <!-- FEATURED DISHES -->
     <section id="dishes" aria-labelledby="dishesHeading">
