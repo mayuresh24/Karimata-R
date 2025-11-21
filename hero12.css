@@ -1,0 +1,134 @@
+/* ================================
+   K A R I M A T A  HERO SECTION
+   (Upgraded Beautiful Version)
+================================ */
+
+.km-hero {
+  padding: 70px 0;
+  background: linear-gradient(180deg, #0b0b0b, #111);
+  color: #f5f5f5;
+  font-family: "Inter", sans-serif;
+}
+
+.km-hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+/* ---------- TEXT COLUMN ---------- */
+.km-hero-text h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.km-hero-text p {
+  margin: 4px 0;
+  font-size: 18px;
+  color: #cfcfcf;
+}
+
+.km-hero-sub {
+  font-size: 20px;
+  font-weight: 600;
+  color: #caa14f;
+  margin: 10px 0 18px;
+}
+
+/* ---------- NEW LINES ---------- */
+.km-hero-line {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+.km-hero-rating {
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  background: rgba(202,161,79,0.1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(202,161,79,0.15);
+}
+
+.km-hero-rating .star {
+  color: #ffc107;
+  font-size: 22px;
+  transform: translateY(-1px);
+}
+
+.km-hero-branches {
+  margin-top: 14px;
+  font-size: 17px;
+  color: #d2d2d2;
+}
+
+.km-hero-branches span {
+  color: #caa14f;
+  font-weight: 600;
+}
+
+/* ---------- IMAGE COLUMN ---------- */
+.km-hero-image img {
+  width: 100%;
+  max-width: 540px;
+  border-radius: 18px;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.45);
+  object-fit: cover;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.km-hero-image img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.6);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .km-hero-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .km-hero-text h1 {
+    font-size: 30px;
+  }
+
+  .km-hero-text p {
+    font-size: 16px;
+  }
+
+  .km-hero-sub {
+    font-size: 18px;
+  }
+
+  .km-hero-line {
+    font-size: 20px;
+  }
+
+  .km-hero-rating {
+    font-size: 18px;
+    margin: 10px auto;
+  }
+
+  .km-hero-branches {
+    font-size: 16px;
+  }
+
+  .km-hero-image img {
+    max-width: 100%;
+  }
+}
